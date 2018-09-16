@@ -2,8 +2,17 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+
+    sourceSets {
+        main {
+
+            assets.srcDirs = [
+                    '../res',
+            ]
+        }
+    }
     defaultConfig {
-        applicationId "com.njligames.engine.bot_android"
+        applicationId "com.njlicgames.engine.android.source"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -11,8 +20,19 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++11"
+                arguments "-DANDROID=TRUE",
+                        "-DNDK_DEBUG=1",
+                        "-DEXECUTABLE_NAME:STRING=PLACEHOLDER",
+                        "-DEXECUTABLE_GITHUB_REPOSITORY=njligames-njlic_engine",
+                        "-DEXECUTABLE_GITHUB_BRANCH:STRING=feature/VR",
+                        "-DEXECUTABLE_GITHUB_ACCOUNT=njligames",
+                        "-DCMAKE_VERBOSE_MAKEFILE=1",
+                        "-DANDROID_DEPRECATED_HEADERS=ON"
             }
+        }
+
+        ndk {
+            abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
         }
     }
     buildTypes {
@@ -20,10 +40,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            jniDebuggable true
+        }
     }
     externalNativeBuild {
         cmake {
-            path "CMakeLists.txt"
+            path "../../CMakeLists.txt"
         }
     }
 }
@@ -35,4 +58,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
 }
