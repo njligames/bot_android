@@ -13,7 +13,7 @@ android {
     }
     defaultConfig {
         applicationId "com.njlicgames.engine.android.source"
-        minSdkVersion 15
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -21,13 +21,12 @@ android {
         externalNativeBuild {
             cmake {
                 arguments "-DANDROID=TRUE",
-                        "-DNDK_DEBUG=1",
                         "-DEXECUTABLE_NAME:STRING=PLACEHOLDER",
                         "-DEXECUTABLE_GITHUB_REPOSITORY=njligames-njlic_engine",
                         "-DEXECUTABLE_GITHUB_BRANCH:STRING=feature/VR",
                         "-DEXECUTABLE_GITHUB_ACCOUNT=njligames",
                         "-DCMAKE_VERBOSE_MAKEFILE=1",
-                        "-DANDROID_DEPRECATED_HEADERS=ON"
+                        "-DANDROID_PLATFORM=android-24"
             }
         }
 
